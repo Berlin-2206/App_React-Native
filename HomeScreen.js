@@ -1,6 +1,6 @@
 // HomeScreen.js
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -31,18 +31,21 @@ function ExerciseScreen() {
   );
 }
 
-// Pantalla de Progreso
-function ProgressScreen() {
-  return (
-    <View style={styles.screen}>
-      <Text style={styles.screenText}>Pantalla de Progreso</Text>
-    </View>
-  );
-}
-
 const Stack = createStackNavigator();
 
 export default function HomeScreen({ navigation }) {
+  const handleLogout = () => {
+    Alert.alert(
+      'Cerrar Sesión',
+      '¿Seguro que quieres salir?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Salir', onPress: () => navigation.navigate('Login') },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.gradientContainer}>
@@ -56,38 +59,26 @@ export default function HomeScreen({ navigation }) {
       </Text>
 
       <View style={styles.iconContainer}>
-        <TouchableOpacity
-          style={styles.icon}
-          onPress={() => navigation.navigate('Diet')}
-        >
+        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Diet')}>
           <Icon name="silverware-fork-knife" size={50} color="#fff" />
           <Text style={styles.iconText}>Dietas</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.icon}
-          onPress={() => navigation.navigate('Health')}
-        >
+        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Health')}>
           <Icon name="heart" size={50} color="#fff" />
           <Text style={styles.iconText}>Salud</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.iconContainer}>
-        <TouchableOpacity
-          style={styles.icon}
-          onPress={() => navigation.navigate('Exercise')}
-        >
+        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Exercise')}>
           <Icon name="dumbbell" size={50} color="#fff" />
           <Text style={styles.iconText}>Ejercicios</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.icon}
-          onPress={() => navigation.navigate('Progress')}
-        >
-          <Icon name="chart-bar" size={50} color="#fff" />
-          <Text style={styles.iconText}>Progreso</Text>
+        <TouchableOpacity style={styles.icon} onPress={handleLogout}>
+          <Icon name="exit-to-app" size={50} color="#fff" />
+          <Text style={styles.iconText}>Salir</Text>
         </TouchableOpacity>
       </View>
     </View>

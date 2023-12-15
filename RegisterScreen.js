@@ -1,30 +1,18 @@
-// LoginScreen.js
+// RegisterScreen.js
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import auth from '@react-native-firebase/auth'; // Importa el módulo de autenticación de Firebase
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  const handleLogin = async () => {
-    try {
-      await auth().signInWithEmailAndPassword(email, password);
-      // Navegar a la pantalla principal (HomeScreen) después de iniciar sesión
-      navigation.navigate('Home');
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error.message);
-      // Manejar el error y proporcionar retroalimentación al usuario si es necesario
-    }
-  };
+  const handleRegister = () => {
+    // Lógica de registro aquí
 
-  const navigateToRegister = () => {
-    // Navegar a la pantalla de registro (RegisterScreen)
-    navigation.navigate('Register');
+    // Navegar a la pantalla de inicio de sesión después del registro
+    navigation.navigate('Login');
   };
 
   return (
@@ -39,10 +27,15 @@ export default function LoginScreen() {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
+            placeholder="Nombre completo"
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
             placeholder="Correo electrónico"
             keyboardType="email-address"
-            onChangeText={(text) => setEmail(text)}
-            value={email}
           />
         </View>
 
@@ -51,22 +44,20 @@ export default function LoginScreen() {
             style={styles.input}
             placeholder="Contraseña"
             secureTextEntry={!showPassword}
-            onChangeText={(text) => setPassword(text)}
-            value={password}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
             <Icon name={showPassword ? 'eye-slash' : 'eye'} size={16} color="black" />
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Iniciar Sesión</Text>
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Registrarse</Text>
         </TouchableOpacity>
 
-        <Text style={styles.registerText}>
-          ¿No tienes una cuenta?{' '}
-          <TouchableOpacity onPress={navigateToRegister}>
-            <Text style={styles.registerLink}>Regístrate</Text>
+        <Text style={styles.loginText}>
+          ¿Ya tienes una cuenta?{' '}
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.loginLink}>Inicia Sesión</Text>
           </TouchableOpacity>
         </Text>
       </View>
@@ -132,11 +123,11 @@ const styles = StyleSheet.create({
     color: 'blue',
     fontWeight: 'bold',
   },
-  registerText: {
+  loginText: {
     fontSize: 16,
     color: 'white',
   },
-  registerLink: {
+  loginLink: {
     color: 'white',
     textDecorationLine: 'underline',
   },
